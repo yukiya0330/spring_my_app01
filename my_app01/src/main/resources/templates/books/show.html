@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Bookers</title>
+	</head>
+	<body>
+		<p th:text="${complete}"></p>
+		<div th:object="${bookData}">
+			<h1 th:text="*{title}"></h1>
+			<p th:text="*{body}"></p>
+		</div>
+		<a>Edit</a> | <a th:href="@{/books}">Back</a>
+	</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+		<title>Bookers</title>
+	</head>
+	<body>
+		<h1>Books</h1>
+		<table>
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Body</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr th:each = "book : ${bookList}">
+					<td th:text = "${book.title}">Title</td>
+					<td th:text = "${book.body}">Body</td>
+					<td>
+						<a th:href="@{/books/{id}(id=${book.id})}">Show</a>
+						<a>Edit</a>
+						<a>Destroy</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<h2>New book</h2>
+		<form method="post" action="#" th:action="@{/books/complete}" th:object="${bookForm}">
+			<label for="title">Title</label><br>
+			<input id="title" name="title" type="text"><br>
+			<input type="hidden" name="title" th:value="*{title}">
+			<div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+			<label for="body">Body</label><br>
+			<input id="body" name="body" type="text"><br>
+			<input type="hidden" name="body" th:value="*{body}">
+			<div th:if="${#fields.hasErrors('body')}" th:errors="*{body}"></div>
+			<input type="submit" value="Create Book">
+		</form>
+	</body>
+</html>

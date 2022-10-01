@@ -3,6 +3,7 @@ package com.example.demo.dao;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,6 +40,19 @@ public class BookDaoImpl implements BookDao {
 			list.add(book);
 		}
 		return list;
+	}
+
+	@Override
+	public Optional<Book> findById(int id) {
+		String sql = "SELECT book.id, title, body FROM book WHERE book.id = ?";
+		Map<String, Object> result = jdbcTemplate.queryForMap(sql, id);
+		Book book = new Book();
+		book.setId((int)result.get("id"));
+		book.setTitle((String)result.get("title"));
+		book.setBody((String)result.get("body"));
+
+		Optional<Book> bookOpt = Optional.ofNullable(book);
+		return bookOpt;
 	}
 
 }

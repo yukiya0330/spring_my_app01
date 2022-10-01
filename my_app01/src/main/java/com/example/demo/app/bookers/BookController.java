@@ -1,19 +1,24 @@
 package com.example.demo.app.bookers;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.demo.app.service.BookService;
 import com.example.demo.entity.Book;
 
 @Controller
-@RequestMapping("/bookers")
+@RequestMapping("/books")
 public class BookController {
 
 	private final BookService bookService;
@@ -23,13 +28,44 @@ public class BookController {
 		this.bookService = bookService;
 	}
 
-//	一覧画面遷移
+//	一覧画面
 	@GetMapping
-	public String index(Model model) {
-
+	public String index(BookForm bookForm,
+			BindingResult result,
+			Model model) {
 		List<Book> list = bookService.getAll();
 		model.addAttribute("bookList", list);
-		return "bookers/index";
+		return "books/index";
+	}
+
+//	保存
+	@PostMapping("/complete")
+	public String complete(@Validated BookForm bookForm,
+			BindingResult result,
+			Model model,
+			RedirectAttributes redirectAttributes) {
+		if(result.hasErrors()) {
+			List<Book> list = bookService.getAll();
+			model.addAttribute("bookList", list);
+			return "books/index";
+		}
+		Book book = new Book();
+		book.setTitle(bookForm.getTitle());
+		book.setBody(bookForm.getBody());
+		bookService.save(book);
+//		redirectAttributes.addAttribute("complete", "Book was successfully created.");
+//		return "redirect:/books/show";
+		return "redirect:/books";
+	}
+
+//	詳細画面
+	@GetMapping("/{show}")
+	public String show(Model model,
+			@PathVariable("show") int id,
+			@ModelAttribute("complete") String complete) {
+		Book book = bookService.findById(id);
+		model.addAttribute("bookData", book);
+		return "books/show";
 	}
 
 }
