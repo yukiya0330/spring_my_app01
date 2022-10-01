@@ -55,4 +55,10 @@ public class BookDaoImpl implements BookDao {
 		return bookOpt;
 	}
 
+	@Override
+	public int update(Book book) {
+		return jdbcTemplate.update("UPDATE book SET id = ?, title = ?, body = ? WHERE id = ?",
+				book.getBody(), book.getTitle());
+	}
+
 }

@@ -13,4 +13,6 @@ public interface BookDao {
 
 	Optional<Book> findById(int id);
 
+	int update(Book book);
+
 }

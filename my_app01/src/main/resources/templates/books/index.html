@@ -20,15 +20,15 @@
 					<td th:text = "${book.body}">Body</td>
 					<td>
 						<a th:href="@{/books/{id}(id=${book.id})}">Show</a>
-						<a>Edit</a>
-						<a>Destroy</a>
+						<a th:href="@{/books/edit/{id}(id=${book.id})}">Edit</a>
+						<a th:href="@{/books}">Destroy</a>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 
 		<h2>New book</h2>
-		<form method="post" action="#" th:action="@{/books/complete}" th:object="${bookForm}">
+		<form method="post" action="#" th:action="@{/books/create}" th:object="${bookForm}">
 			<label for="title">Title</label><br>
 			<input id="title" name="title" type="text"><br>
 			<input type="hidden" name="title" th:value="*{title}">

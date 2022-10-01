@@ -15,4 +15,8 @@ public interface BookService {
 
 	Book findById(int id);
 
+	void update(Book book);
+
+	Optional<Book> getId(int id);
+
 }

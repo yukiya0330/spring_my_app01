@@ -39,33 +39,63 @@ public class BookController {
 	}
 
 //	保存
-	@PostMapping("/complete")
-	public String complete(@Validated BookForm bookForm,
+	@PostMapping("/create")
+	public String create(@Validated BookForm bookForm,
+			BindingResult result,
+			Model model,
+//			@PathVariable("id") int id,
+			RedirectAttributes redirectAttributes) {
+//		if(result.hasErrors()) {
+//			List<Book> list = bookService.getAll();
+//			model.addAttribute("bookList", list);
+//			return "books/index";
+//		}
+		Book book = new Book();
+		book.setTitle(bookForm.getTitle());
+		book.setBody(bookForm.getBody());
+		bookService.save(book);
+//		redirectAttributes.addAttribute("complete", "Book was successfully created.");
+//		redirectAttributes.addAttribute("id", id);
+		return "redirect:/books";
+	}
+
+//	詳細画面
+	@GetMapping("/{id}")
+	public String show(Model model,
+			@PathVariable("id") int id,
+			@ModelAttribute("complete") String complete) {
+		Book book = bookService.findById(id);
+		model.addAttribute("bookData", book);
+		return "books/show";
+	}
+
+//	編集画面
+	@GetMapping("/edit/{id}")
+	public String edit(BookForm bookForm,
+			Model model,
+			@PathVariable int id) {
+		Book book = bookService.findById(id);
+		model.addAttribute("bookForm", book);
+		return "books/edit";
+	}
+
+//	アップデート
+	@PostMapping("/update")
+	public String update(BookForm bookForm,
 			BindingResult result,
 			Model model,
 			RedirectAttributes redirectAttributes) {
 		if(result.hasErrors()) {
 			List<Book> list = bookService.getAll();
 			model.addAttribute("bookList", list);
-			return "books/index";
+			return "books/edit";
 		}
 		Book book = new Book();
-		book.setTitle(bookForm.getTitle());
-		book.setBody(bookForm.getBody());
-		bookService.save(book);
-//		redirectAttributes.addAttribute("complete", "Book was successfully created.");
-//		return "redirect:/books/show";
+		book.setTitle(book.getTitle());
+		book.setBody(book.getBody());
+		bookService.update(book);
+//		redirectAttributes.addAttribute("show", 1);
 		return "redirect:/books";
-	}
-
-//	詳細画面
-	@GetMapping("/{show}")
-	public String show(Model model,
-			@PathVariable("show") int id,
-			@ModelAttribute("complete") String complete) {
-		Book book = bookService.findById(id);
-		model.addAttribute("bookData", book);
-		return "books/show";
 	}
 
 }
