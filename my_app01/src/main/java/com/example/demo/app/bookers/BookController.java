@@ -45,11 +45,11 @@ public class BookController {
 			Model model,
 //			@PathVariable("id") int id,
 			RedirectAttributes redirectAttributes) {
-//		if(result.hasErrors()) {
-//			List<Book> list = bookService.getAll();
-//			model.addAttribute("bookList", list);
-//			return "books/index";
-//		}
+		if(result.hasErrors()) {
+			List<Book> list = bookService.getAll();
+			model.addAttribute("bookList", list);
+			return "books/index";
+		}
 		Book book = new Book();
 		book.setTitle(bookForm.getTitle());
 		book.setBody(bookForm.getBody());
