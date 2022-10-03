@@ -43,9 +43,4 @@ public class BookServiceImpl implements BookService {
 	public void update(Book book) {
 	}
 
-	@Override
-	public Optional<Book> getId(int id) {
-		return dao.findById(id);
-	}
-
 }
