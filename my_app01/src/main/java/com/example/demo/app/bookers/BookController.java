@@ -56,7 +56,7 @@ public class BookController {
 		bookService.save(book);
 //		redirectAttributes.addAttribute("complete", "Book was successfully created.");
 //		redirectAttributes.addAttribute("id", id);
-		return "redirect:/books";
+		return "redirect:/books/show";
 	}
 
 //	詳細画面
